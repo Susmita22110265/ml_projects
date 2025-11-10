@@ -1,6 +1,6 @@
 # helps us get the information about error other than the error message.  
 import sys 
-import logging
+from src.logger import logging
 
 # if an error is occuring in our project , we pass the error message and error detail to the below function and use sys to get more info such as error filename, linenumber, etc. 
 def error_message_detail(error, error_detail:sys):
@@ -27,3 +27,10 @@ class CustomException(Exception):
     def __str__(self):
         return self.error_message
 
+if __name__ == "__main__":
+    try :
+        a = 1/0
+    except :
+        logging.info("Zero Division error")
+        raise CustomException("Zero Division error",sys)
+        
