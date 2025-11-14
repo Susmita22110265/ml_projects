@@ -11,6 +11,10 @@ import sys # To understand error better, gives all information about error
 from src.components.data_transformation import DataTransformation
 from src.components.data_transformation import DataTransformationConfig
 
+from src.components.model_trainer import ModelTrainerConfig
+from src.components.model_trainer import ModelTrainer
+
+
 @dataclass
 class DataIngestionConfig:  # Class which helps us store our training data file, testing data file and original data file for safety.
     train_data_path : str = os.path.join('artifacts', 'train.csv')
@@ -48,21 +52,24 @@ class DataIngestion :     # class that helps us do this saving files
         except Exception as e:
             raise CustomException(e,sys) 
 
-
-
 # So when this data ingestion file is called, we will return the training and testing dataset for data transformation, EDA and model training 
 
-if __name__ == "__main__" : 
+
+
+
+
+# Summary : The below code creates all the instances and Does all 3 steps together to a raw data provided. And final best accuracy is printed !
+if __name__ == "__main__" :  
     obj = DataIngestion()
     train_data, test_data = obj.initiate_data_ingestion()
 
     data_transformation = DataTransformation()
-    data_transformation.initiate_data_transformation(train_data, test_data)
+    train_arr, test_arr,_ = data_transformation.initiate_data_transformation(train_data, test_data)
     
+    modeltrainer = ModelTrainer()
+    print(modeltrainer.initiate_model_trainer(train_arr, test_arr))
 
 
 
 # To run this file use the command ->    python -m src.components.data_ingestion
-
-
 # this makes sure that the project structure and other internal runnings are taken care of
