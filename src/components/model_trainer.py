@@ -40,21 +40,60 @@ class ModelTrainer :
                                                  test_array[:, -1])
            
             models = {
-                "Random Forest " : RandomForestRegressor(),
-                "Decision Tree" : DecisionTreeRegressor(), 
-                "Gradient Boosting" : GradientBoostingRegressor(),
-                "Linear Regression" : LinearRegression(), 
-                "K - Neighbors Classifier" : KNeighborsRegressor(), 
-                "XGBClassifier " : XGBRegressor(),
+                "RandomForest" : RandomForestRegressor(),
+                "DecisionTree" : DecisionTreeRegressor(), 
+                "GradientBoosting" : GradientBoostingRegressor(),
+                "LinearRegression" : LinearRegression(), 
+                "KNeighborsClassifier" : KNeighborsRegressor(), 
+                "XGBRegressor" : XGBRegressor(),
                 #"CatBoosting Classifier" : CatBoostRegressor(verbose = False),
-                "AdaBoost Classifier" : AdaBoostRegressor()
+                "AdaBoostClassifier" : AdaBoostRegressor()
             }
+
+            params = {
+
+                "DecisionTree": {
+                    "max_depth": [3, 5, 10, None],
+                    "splitter": ["best", "random"]
+                },
+
+                "RandomForest": {
+                    "n_estimators": [50, 100, 200],
+                    "max_depth": [None, 10, 20]
+                },
+
+                "GradientBoosting": {
+                    "learning_rate": [0.01, 0.05, 0.1],
+                    "n_estimators": [50, 100, 200],
+                },
+
+                "LinearRegression": {},
+
+                "KNeighborsClassifier": {
+                    "n_neighbors": [3, 5, 7, 9],
+                    "weights": ["uniform", "distance"]
+                },
+
+                "XGBRegressor": {
+                    "learning_rate": [0.01, 0.05, 0.1],
+                    "n_estimators": [50, 100, 200]
+                },
+
+                "AdaBoostClassifier": {
+                    "learning_rate": [0.01, 0.05, 0.1],
+                    "n_estimators": [50, 100, 200]
+                }
+            }
+
+            logging.info("Hyperparameter tuning done")
+
 
             model_report : dict = evaluate_model(X_train = X_train,    # evaluate model function will fit on the training data and will predic the y. r2_score is calculated based on the accuracy of how good y_prediction aligns with y_original 
                                                  y_train = y_train,
                                                  X_test = X_test, 
                                                  y_test = y_test, 
-                                                 models = models)
+                                                 models = models, 
+                                                 param = params)
             
             # First train on X_train and y_train to learn the patterns
             # Input X_test to predict y_test
